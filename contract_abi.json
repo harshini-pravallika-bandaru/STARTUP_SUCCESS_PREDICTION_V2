@@ -1,0 +1,27 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "startupOwner", "type": "address" },
+      { "internalType": "uint256", "name": "startupId", "type": "uint256" },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "string", "name": "notes", "type": "string" }
+    ],
+    "name": "recordInvestment",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "address", "name": "investor", "type": "address" },
+      { "indexed": false, "internalType": "address", "name": "startupOwner", "type": "address" },
+      { "indexed": false, "internalType": "uint256", "name": "startupId", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "indexed": false, "internalType": "string", "name": "notes", "type": "string" },
+      { "indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256" }
+    ],
+    "name": "InvestmentMade",
+    "type": "event"
+  }
+]

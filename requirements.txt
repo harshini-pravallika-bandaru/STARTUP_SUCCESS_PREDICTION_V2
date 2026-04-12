@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Werkzeug
+scikit-learn
+numpy
+joblib
+gunicorn
+pandas
+web3
+python-dotenv

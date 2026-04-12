@@ -1,0 +1,13 @@
+[Unit]
+Description=Startup Platform Flask App
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/startup_platform
+Environment="PATH=/home/ubuntu/startup_platform/venv/bin"
+ExecStart=/home/ubuntu/startup_platform/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8000 app:app
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Investor Dashboard</h2>
+<p>Welcome, {{ investor.investor_name }}. Total invested: ${{ "%.2f"|format(investor.total_invested) }}</p>
+
+<form method="get" class="row g-3 mb-4">
+    <div class="col-auto">
+        <select name="industry" class="form-select">
+            <option value="">All Industries</option>
+            {% for ind in industries %}
+                <option value="{{ ind }}" {% if selected_industry == ind %}selected{% endif %}>{{ ind.replace('_', ' ') }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto"><button type="submit" class="btn btn-secondary">Filter</button></div>
+</form>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Most Invested Startups</h4>
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr><th>Startup</th><th>Industry</th><th>Total Invested</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in most_invested %}
+                <tr>
+                    <td>{{ s.startup_name or s.user.email }}</td>
+                    <td>{{ s.industry_type or '' }}</td>
+                    <td>${{ "%.2f"|format(s.total_invested_amount) }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#investModal"
+                                data-id="{{ s.id }}" data-name="{{ s.startup_name }}">Invest</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Highest Predicted Success</h4>
+        <table class="table table-bordered table-sm">
+            <thead>
+                <tr><th>Startup</th><th>Score</th><th>Grade</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                {% for s in highest_pred %}
+                <tr>
+                    <td>{{ s.startup_name or s.user.email }}</td>
+                    <td>{{ s.success_prediction_score }}</td>
+                    <td>{{ s.prediction_grade }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#investModal"
+                                data-id="{{ s.id }}" data-name="{{ s.startup_name }}">Invest</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- New: Investment History with Blockchain Info -->
+<h4 class="mt-4">Your Investment History</h4>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr><th>Startup</th><th>Amount</th><th>Date</th><th>Blockchain Transaction</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+        {% for inv in investor.investments %}
+        <tr>
+            <td>{{ inv.startup.startup_name or inv.startup.user.email }}</td>
+            <td>${{ "%.2f"|format(inv.amount) }}</td>
+            <td>{{ inv.investment_date.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+                {% if inv.blockchain_tx_hash %}
+                    <a href="https://sepolia.etherscan.io/tx/{{ inv.blockchain_tx_hash }}" target="_blank">
+                        {{ inv.blockchain_tx_hash[:10] }}...
+                    </a>
+                {% else %}
+                    <span class="text-muted">Pending</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if inv.blockchain_synced %}
+                    <span class="badge bg-success">Synced</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Pending / Failed</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="text-center">No investments made yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Investment Modal (unchanged) -->
+<div class="modal fade" id="investModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" action="{{ url_for('invest') }}">
+                <div class="modal-header"><h5 class="modal-title">Invest in <span id="startupName"></span></h5></div>
+                <div class="modal-body">
+                    <input type="hidden" name="startup_id" id="startupId">
+                    <div class="mb-3"><label>Amount ($)</label><input type="number" name="amount" step="0.01" class="form-control" required></div>
+                    <div class="mb-3"><label>Notes (optional)</label><textarea name="notes" class="form-control"></textarea></div>
+                </div>
+                <div class="modal-footer"><button type="submit" class="btn btn-primary">Confirm Investment</button></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var investModal = document.getElementById('investModal');
+    investModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget;
+        var id = button.getAttribute('data-id');
+        var name = button.getAttribute('data-name');
+        document.getElementById('startupId').value = id;
+        document.getElementById('startupName').innerText = name;
+    });
+</script>
+{% endblock %}
