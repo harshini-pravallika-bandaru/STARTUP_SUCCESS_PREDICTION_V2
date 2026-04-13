@@ -8,11 +8,11 @@
             <!-- Basic Info -->
             <div class="mb-3">
                 <label class="form-label">Startup Name</label>
-                <input type="text" name="startup_name" value="{{ startup.startup_name }}" class="form-control">
+                <input type="text" name="startup_name" value="{{ startup.startup_name }}" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Industry Type</label>
-                <select name="industry_type" class="form-select">
+                <select name="industry_type" class="form-select" required>
                     <option value="">-- Select Industry --</option>
                     {% for ind in industries %}
                         <option value="{{ ind }}" {% if startup.industry_type == ind %}selected{% endif %}>{{ ind.replace('_', ' ') }}</option>
@@ -23,58 +23,58 @@
             <!-- Founders Information -->
             <h5 class="mt-4">Founders</h5>
             <div class="row mb-2">
-                <div class="col"><label>Founders Count</label><input type="number" name="founders_count" value="{{ startup.founders_count }}" class="form-control"></div>
-                <div class="col"><label>Different Nationalities</label><input type="number" name="founders_different_nationality" value="{{ startup.founders_different_nationality }}" class="form-control"></div>
+                <div class="col"><label>Founders Count</label><input type="number" name="founders_count" value="{{ startup.founders_count }}" class="form-control" min="0" required></div>
+                <div class="col"><label>Different Nationalities</label><input type="number" name="founders_different_nationality" value="{{ startup.founders_different_nationality }}" class="form-control" min="0"></div>
             </div>
             <div class="row mb-2">
-                <div class="col"><label>Entrepreneurial Background (0/1)</label><input type="number" name="founders_entrepreneurial_background" value="{{ startup.founders_entrepreneurial_background }}" class="form-control"></div>
-                <div class="col"><label>Male Count</label><input type="number" name="founders_male_count" value="{{ startup.founders_male_count }}" class="form-control"></div>
+                <div class="col"><label>Entrepreneurial Background (0/1)</label><input type="number" name="founders_entrepreneurial_background" value="{{ startup.founders_entrepreneurial_background }}" class="form-control" min="0" max="1"></div>
+                <div class="col"><label>Male Count</label><input type="number" name="founders_male_count" value="{{ startup.founders_male_count }}" class="form-control" min="0"></div>
             </div>
             <div class="row mb-2">
-                <div class="col"><label>Female Count</label><input type="number" name="founders_female_count" value="{{ startup.founders_female_count }}" class="form-control"></div>
-                <div class="col"><label>Degree Level (0-3)</label><input type="number" name="founders_degree" value="{{ startup.founders_degree }}" class="form-control"></div>
+                <div class="col"><label>Female Count</label><input type="number" name="founders_female_count" value="{{ startup.founders_female_count }}" class="form-control" min="0"></div>
+                <div class="col"><label>Degree Level (0-3)</label><input type="number" name="founders_degree" value="{{ startup.founders_degree }}" class="form-control" min="0" max="3"></div>
             </div>
 
             <!-- Funding Information -->
             <h5 class="mt-4">Funding & Investors</h5>
             <div class="row mb-2">
-                <div class="col"><label>Total Funding Rounds</label><input type="number" name="round_count" value="{{ startup.round_count }}" class="form-control"></div>
-                <div class="col"><label>Total Investors Count</label><input type="number" name="investor_count" value="{{ startup.investor_count }}" class="form-control"></div>
+                <div class="col"><label>Total Funding Rounds</label><input type="number" name="round_count" value="{{ startup.round_count }}" class="form-control" min="0"></div>
+                <div class="col"><label>Total Investors Count</label><input type="number" name="investor_count" value="{{ startup.investor_count }}" class="form-control" min="0"></div>
             </div>
             <div class="row mb-2">
-                <div class="col"><label>Lead Investors Count</label><input type="number" name="lead_investor_count" value="{{ startup.lead_investor_count }}" class="form-control"></div>
-                <div class="col"><label>Total Funding Amount ($)</label><input type="number" step="0.01" name="total_funding_amount" value="{{ startup.total_funding_amount }}" class="form-control"></div>
+                <div class="col"><label>Lead Investors Count</label><input type="number" name="lead_investor_count" value="{{ startup.lead_investor_count }}" class="form-control" min="0"></div>
+                <div class="col"><label>Total Funding Amount ($)</label><input type="number" step="0.01" name="total_funding_amount" value="{{ startup.total_funding_amount }}" class="form-control" min="0"></div>
             </div>
             <div class="row mb-2">
-                <div class="col"><label>Investors in Last Round</label><input type="number" name="last_round_investors_count" value="{{ startup.last_round_investors_count }}" class="form-control"></div>
-                <div class="col"><label>Last Raised Amount ($)</label><input type="number" step="0.01" name="last_raised_amount" value="{{ startup.last_raised_amount }}" class="form-control"></div>
+                <div class="col"><label>Investors in Last Round</label><input type="number" name="last_round_investors_count" value="{{ startup.last_round_investors_count }}" class="form-control" min="0"></div>
+                <div class="col"><label>Last Raised Amount ($)</label><input type="number" step="0.01" name="last_raised_amount" value="{{ startup.last_raised_amount }}" class="form-control" min="0"></div>
             </div>
             <div class="mb-2">
                 <label>Timelapse until Fifth Year (months)</label>
-                <input type="number" step="0.1" name="timelapse_until_fifth_year" value="{{ startup.timelapse_until_fifth_year }}" class="form-control">
+                <input type="number" step="0.1" name="timelapse_until_fifth_year" value="{{ startup.timelapse_until_fifth_year }}" class="form-control" min="0">
                 <small class="text-muted">Lower is better (0-60). Time from last funding to March 2018.</small>
             </div>
 
             <!-- Social Media & Online Presence -->
             <h5 class="mt-4">Social Media & Online Presence</h5>
             <div class="row mb-2">
-                <div class="col"><label>LinkedIn Followers</label><input type="number" name="linkedin_followers" value="{{ startup.linkedin_followers }}" class="form-control"></div>
-                <div class="col"><label>Twitter Followers</label><input type="number" name="twitter_followers" value="{{ startup.twitter_followers }}" class="form-control"></div>
+                <div class="col"><label>LinkedIn Followers</label><input type="number" name="linkedin_followers" value="{{ startup.linkedin_followers }}" class="form-control" min="0"></div>
+                <div class="col"><label>Twitter Followers</label><input type="number" name="twitter_followers" value="{{ startup.twitter_followers }}" class="form-control" min="0"></div>
             </div>
             <div class="row mb-2">
-                <div class="col"><label>Facebook Followers</label><input type="number" name="facebook_followers" value="{{ startup.facebook_followers }}" class="form-control"></div>
-                <div class="col"><label>Employees on LinkedIn</label><input type="number" name="employees_on_linkedin" value="{{ startup.employees_on_linkedin }}" class="form-control"></div>
+                <div class="col"><label>Facebook Followers</label><input type="number" name="facebook_followers" value="{{ startup.facebook_followers }}" class="form-control" min="0"></div>
+                <div class="col"><label>Employees on LinkedIn</label><input type="number" name="employees_on_linkedin" value="{{ startup.employees_on_linkedin }}" class="form-control" min="0"></div>
             </div>
 
             <!-- Intellectual Property & Age -->
             <h5 class="mt-4">IP & Company Age</h5>
             <div class="row mb-2">
-                <div class="col"><label>Trade Names Count</label><input type="number" name="trade_names_count" value="{{ startup.trade_names_count }}" class="form-control"></div>
-                <div class="col"><label>Inventions/Patents Count</label><input type="number" name="inventions_count" value="{{ startup.inventions_count }}" class="form-control"></div>
+                <div class="col"><label>Trade Names Count</label><input type="number" name="trade_names_count" value="{{ startup.trade_names_count }}" class="form-control" min="0"></div>
+                <div class="col"><label>Inventions/Patents Count</label><input type="number" name="inventions_count" value="{{ startup.inventions_count }}" class="form-control" min="0"></div>
             </div>
             <div class="mb-2">
                 <label>Startup Age (years, as of 2018)</label>
-                <input type="number" name="startup_age" value="{{ startup.startup_age }}" class="form-control">
+                <input type="number" name="startup_age" value="{{ startup.startup_age }}" class="form-control" min="0" required>
                 <small class="text-muted">Age between 1 and 4 years (startups founded 2014-2018).</small>
             </div>
 
