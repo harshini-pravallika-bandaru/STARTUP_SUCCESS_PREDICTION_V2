@@ -42,17 +42,27 @@ def predict(startup_dict):
     """startup_dict: dict with keys matching the 20 features"""
     model, scaler = _load()
 
-    # Order of features must match training order
+    # STEP 1: Extract base values
+    linkedin_followers = startup_dict.get('linkedin_followers', 0)
+    employees = startup_dict.get('employees_on_linkedin', 0)
+    funding = startup_dict.get('total_funding_amount', 0)
+    startup_age = startup_dict.get('startup_age', 0)
+
+    # STEP 2: Feature engineering (ADD HERE)
+    funding_per_employee = funding / (employees + 1)
+    followers_per_age = linkedin_followers / (startup_age + 1)
+
+    # STEP 3: Build full feature vector (22 features)
     features = [
-        startup_dict.get('linkedin_followers', 0),
+        linkedin_followers,
         startup_dict.get('timelapse_until_fifth_year', 30.0),
-        startup_dict.get('employees_on_linkedin', 0),
+        employees,
         startup_dict.get('twitter_followers', 0),
         startup_dict.get('last_round_investors_count', 0),
         startup_dict.get('last_raised_amount', 0.0),
         startup_dict.get('investor_count', 0),
         startup_dict.get('lead_investor_count', 0),
-        startup_dict.get('total_funding_amount', 0.0),
+        funding,
         startup_dict.get('founders_count', 0),
         startup_dict.get('round_count', 0),
         startup_dict.get('facebook_followers', 0),
@@ -63,8 +73,13 @@ def predict(startup_dict):
         startup_dict.get('founders_degree', 0),
         startup_dict.get('trade_names_count', 0),
         startup_dict.get('inventions_count', 0),
-        startup_dict.get('startup_age', 0)
+        startup_age,
+
+        # engineered features at the END (same order as training)
+        funding_per_employee,
+        followers_per_age
     ]
+
 
     X = np.array(features).reshape(1, -1)
     X_scaled = scaler.transform(X)
