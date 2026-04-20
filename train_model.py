@@ -24,7 +24,7 @@ def generate_training_data():
     np.random.seed(42)
     data = []
 
-    for _ in range(500):
+    for _ in range(3000):
         row = {
             'linkedin_followers': np.random.randint(0, 20000),
             'timelapse_until_fifth_year': np.random.uniform(1, 60),
@@ -55,7 +55,7 @@ def generate_training_data():
             0.15 * (row['employees_on_linkedin'] / 500) +
             0.10 * (row['investor_count'] / 20) +
             0.10 * (row['round_count'] / 6) +
-            0.25 * np.random.rand()   # noise = KEY
+            0.10 * np.random.rand()   # noise = KEY
         )
 
         row['success'] = 1 if score > 0.5 else 0
@@ -99,10 +99,11 @@ def train_and_save():
     )
 
     model = RandomForestClassifier(
-        n_estimators=200,
-        max_depth=8,
-        min_samples_split=5,
-        min_samples_leaf=2,
+        n_estimators=400,
+        max_depth=12,
+        min_samples_split=3,
+        min_samples_leaf=1,
+        max_features='sqrt',
         random_state=42,
         n_jobs=-1
     )
